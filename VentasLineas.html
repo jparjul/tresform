@@ -1,0 +1,693 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" >
+    
+
+<meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+
+
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery-mobile-960.min.css" />
+ 
+    <link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css" />
+    <script src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+    <script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+
+
+
+</head>
+ <script language="javascript" type="text/javascript">
+
+     var myDB;
+     var Cliente;
+     var Visita;
+     var Pedido;
+     var Action;
+
+
+     var TotalBruto,TotalPedido,TotalNeto,TotalDescuento,TotalImpuesto;
+
+     $(document).bind("mobileinit", function () {
+         $.mobile.ajaxEnabled = false;
+     });
+
+     $("#detalle1").live("pageinit", function (event) {
+
+         myDB = OpenDatabase(successfunction, errorfunction);
+
+         Cliente = GetStorageValue("Cliente");
+         Visita = GetStorageValue("Visita");
+         Pedido = GetStorageValue("Pedido");
+         Action = GetStorageValue("Action");
+
+         $('#toptitle').text("Detalle Pedido " + Pedido.toString());
+
+        if (Action != null) AddNewItem();
+        InitializeTempOrderLines(Pedido, Visita, Cliente, successfunction , errorfunction);
+        RefreshDatosCliente();
+        RefreshDatosVisita();
+        RefreshDatosCabecera();
+        RefreshLineas();
+
+     });
+
+   
+     function RefreshDatosCliente() {
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT * FROM AX_OCRD WHERE CardCode = ?", [Cliente], function (tx, result) {
+                 dataset = result.rows;
+
+                 var sInitText = "<li data-mini='true'><div class='container_12'><div class='grid_4'>";
+                 var sMidText = "</div><div class='grid_8'>";
+                 var sEndText = "</div></div></li>";
+
+                 var sText = "";
+                 sText = sInitText + "Cliente:" + sMidText + result.rows.item(0)['CardCode'] + sEndText;
+                 $("#liCliente").empty();
+                 $("#liCliente").append(sText);
+
+                 sText = sInitText + "Nombre Cliente:" + sMidText + result.rows.item(0)['CardName'] + sEndText;
+                 $("#liNombreCliente").empty();
+                 $("#liNombreCliente").append(sText);
+
+                 $("#lvDatosPedido").listview("refresh");
+
+             });
+         });
+     }
+
+     function ShowCantidadesLinea(iLinea) {
+
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT * FROM AX_TEMP_RDR1 WHERE IdOrdr = ? AND Id = ?", [Pedido, iLinea], function (tx, result) {
+
+                 var sItem = result.rows.item(0)['ItemCode'].toString();
+                 var sName = result.rows.item(0)['ItemName'].toString();
+                 var sQuantity =  result.rows.item(0)['Quantity'].toString();
+                 var sQuantityFree = result.rows.item(0)['QuantityFree'].toString();
+                 var sQuantityLastVisit = result.rows.item(0)['QuantityLastVisit'].toString();
+
+                 dQuantity = parseFloat(sQuantity);
+                 if (dQuantity==0)
+                     $('#popupCantidad').val(1);
+                 else
+                     $('#popupCantidad').val(sQuantity);
+
+                 $('#popuplineaId').val(iLinea);
+                 $('#popupPromocion').val(sQuantityFree);
+                 $('#popupName').text(sItem);
+                 $('#popupItem').text(sName);
+
+                 $('#popuplineaId').text(iLinea);
+                 
+                 $("#popuplinea").popup("open")
+
+                 
+             });
+         });
+
+     }
+
+     $(document).delegate('#popupcancelar', 'click', function () {
+
+         $("#popuplinea").popup("close");
+
+     })
+
+//     $(document).delegate('#popupCantidad', 'change', function () {
+
+//         var sQuantity = $('#popupCantidad').val();
+//         var dQuantity = parseFloat(sQuantity);
+//         var dMax = $("#popupCantidad").attr("max");
+
+//         if (dQuantity > dMax) {
+//             $('#popupCantidad').attr('max', dQuantity);
+//             $('#popupCantidad').slider('refresh');
+//         }
+
+//     });
+
+
+     function ModificarLinea() {
+
+         var sId = $('#popuplineaId').val();
+         var sQuantity = $('#popupCantidad').val();
+         var dQuantity = parseFloat(sQuantity);
+         $('#LineQuantity' + sId).text(dQuantity.toString());
+
+         var sPromocion = $('#popupPromocion').val();
+         var dPromocion = parseFloat(sPromocion);
+         $('#LinePromotion' + sId).text(dPromocion.toString());
+
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("UPDATE AX_TEMP_RDR1 SET Quantity = ?, QuantityFree = ? WHERE Id = ?", [ dQuantity,dPromocion,sId], nullDataHandler, killTransaction);
+
+         });
+
+         $("#popuplinea").popup("close");
+
+         RecalcularTotales();
+
+     }
+
+     function RecalcularTotales() {
+
+         var sCantidad = "0";dCantidad = 0;
+         var sCantidadPromo = "0";dCantidadPromo = 0;
+         var sPrecio = "0";dPrecio = 0;
+         var sImporte = "0"; dImporte = 0;
+         var dTotal = 0;dImporteLinea = 0;
+         var NumeroLineas = $('#lvLineas').children('li').length;
+         var sId = "";
+         var i = 0;
+
+         for (i = 1; i < NumeroLineas; i++) {
+
+             sId = $('#lvLineas').children('li')[i].id;
+
+             sCantidad = $('#LineQuantity' + sId).text();
+             dCantidad = GetFloat(sCantidad);
+             sCantidadPromo = $('#LineQuantityFree' + sId).text();
+             dCantidadPromo = GetFloat(sCantidadPromo);
+             sPrecio = $('#LinePrice' + sId).text();
+             dPrecio = GetFloat(sPrecio);
+
+             dImporte = (dCantidad - dCantidadPromo) * dPrecio;
+
+             dTotal += dImporte;
+
+         }
+
+         TotalPedido = dTotal;
+
+         $('#TotalBruto').text(dTotal.toFixed(2).toString());
+         $('#TotalNeto').text(dTotal.toFixed(2).toString());
+         $('#TotalPedido').text(dTotal.toFixed(2).toString());
+     }
+
+     function GetFloat(sValue) {
+         var dValue = 0;
+         try {
+             if (isNumber(sValue))
+                dValue = parseFloat(sValue);
+         }
+         catch (e) {
+         }
+         return dValue;
+     }
+
+     function isNumber(n) {
+         return !isNaN(parseFloat(n)) && isFinite(n);
+     }
+
+     function IncrementarCantidad() {
+         var sQuantity = $('#popupCantidad').val();
+         var dQuantity = parseFloat(sQuantity);
+         dQuantity++;
+         $('#popupCantidad').val(dQuantity.toString());
+     }
+
+     function DecrementarCantidad() {
+         var sQuantity = $('#popupCantidad').val();
+         var dQuantity = parseFloat(sQuantity);
+         dQuantity--;
+         $('#popupCantidad').val(dQuantity.toString());
+     }
+
+     function IncrementarPromocion() {
+         var sQuantity = $('#popupPromocion').val();
+         var dQuantity = parseFloat(sQuantity);
+         dQuantity++;
+         $('#popupPromocion').val(dQuantity.toString());
+     }
+
+     function DecrementarPromocion() {
+         var sQuantity = $('#popupPromocion').val();
+         var dQuantity = parseFloat(sQuantity);
+         dQuantity--;
+         $('#popupPromocion').val(dQuantity.toString());
+     }
+
+     function RefreshDatosVisita() {
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT Comments FROM AX_VISITAS WHERE Id = ?", [Visita], function (tx, result) {
+                 var sText = "";
+                 if (result.rows.item(0)['Comments'] != null)
+                     sText = result.rows.item(0)['Comments'];
+
+                 $('#txtCommentsVisita').text(sText);
+
+             });
+         });
+     }
+
+     function RefreshDatosCabecera() {
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT DueDate FROM AX_ORDR WHERE Id= ?", [Pedido], function (tx, result) {
+                 var sText = "";
+                 if (result.rows.item(0)['DueDate'] != null)
+                     sText = result.rows.item(0)['DueDate'];
+
+                 $('#txtFechaEntrega').val(sText);
+
+             });
+         });
+     }
+
+     function AddNewItem() {
+
+         var NewItemId = GetStorageValue("Articulo");
+
+         if (NewItemId != null) {
+
+             InsertTempOrderLines(Pedido, Visita, Cliente, NewItemId, successfunction, errorfunction);
+         }
+     }
+
+     function DeleteLine(iLine) {
+         DeleteTempOrderLine(iLine, RefreshLineas, errorfunction);
+
+     }
+
+     function DeleteLines() {
+         DeleteTempOrderLines(Pedido, RefreshLineas, errorfunction);
+
+     }
+
+     function ResetLines() {
+         ResetTempOrderLines(Pedido, RefreshLineas, errorfunction);
+
+     }
+
+     function RefreshLineas() {
+         var sTextDiscount, dQuantity, dPrice, dDiscount, dTotalLinea;
+         var sId, sItem, sName, sQuantity, sQuantityFree, sPrice, sDiscount
+
+         TotalBruto=0;TotalPedido=0;TotalNeto=0;TotalDescuento=0;TotalImpuesto=0;
+
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT Id,ItemCode,ItemName,Quantity,QuantityFree,Price, DiscPrcnt FROM AX_TEMP_RDR1 WHERE IdOrdr = ?", [Pedido], function (tx, result) {
+                 dataset = result.rows;
+
+                 $('#lvLineas').empty();
+                 $("#lvLineas").append('<li data-role="list-divider" data-mini="true" data-inset="true"><div class="container_16"><div class="grid_2">Código</div><div class="grid_7">Descripción</div><div class="grid_2">Cantidad</div><div class="grid_2">Promo</div><div class="grid_3">PVP</div></div></li>');
+   
+                 for (var i = 0; i < dataset.length; i++) {
+
+                     sPrice = "0"; sDiscount = "0"; sQuantity = "0"; sQuantityFree = "0";
+
+                     sId = result.rows.item(i)['Id'].toString();
+                     sItem = result.rows.item(i)['ItemCode'].toString();
+                     sName = result.rows.item(i)['ItemName'].toString();
+
+                     if (result.rows.item(i)['Quantity'] != null)
+                         sQuantity = result.rows.item(i)['Quantity'].toString();
+
+                     if (result.rows.item(i)['QuantityFree'] != null)
+                         sQuantityFree = result.rows.item(i)['QuantityFree'].toString();
+
+                     if (result.rows.item(i)['Price'] != null)
+                         sPrice = result.rows.item(i)['Price'].toString();
+
+//                     if (result.rows.item(i)['DiscPrcnt'] != null)
+                     //                         sDiscount = result.rows.item(i)['DiscPrcnt'].toString();
+
+
+                     dQuantity = parseFloat(sQuantity);
+                     dPrice = parseFloat(sPrice);
+
+                     if (sDiscount == "0") sTextDiscount = "0";
+                     else sTextDiscount = sDiscount + "%";
+                     if (sQuantity == "0") sQuantity = "-";
+                     if (sQuantityFree == "0") sQuantityFree = "-";
+
+
+                     $("#lvLineas").append('<li id=' + sId + '><a href="javascript:ShowCantidadesLinea(\'' + sId + '\');"><div class="container_16"><div class="grid_2">' + sItem.toString() + '</div><div class="grid_8"><div class="ui-grid-a">' + sName.toString() + '</div></div><div class="grid_2" id=LineQuantity' + sId + '>' + sQuantity.toString() + '</div><div class="grid_2" id=LinePromotion' + sId + '>' + sQuantityFree.toString() + '</div><div class="grid_2" id=LinePrice' + sId + '>' + dPrice.toFixed(2).toString() + '</div></div></a><a href="javascript:DeleteLine(' + sId.toString() + ')" data-rel="dialog" data-transition="slideup"></a></li>');
+ 
+                     dTotalLinea = (dQuantity * dPrice);
+                     if (dDiscount > 0) dTotalLinea = dTotalLinea * (1 - (dDiscount / 100));
+
+                     TotalBruto += dTotalLinea;
+                 }
+                 $('#lvLineas').listview('refresh', true);
+                 RefreshTotales();
+
+                 $("#detalle1").trigger("create");
+
+             });
+         });
+
+     }
+
+
+     function RefreshTotales() {
+         $('#lvTotales').empty();
+         $("#lvTotales").append('<li data-mini="true" data-role="list-divider"><div class="container_12"><div class="grid_2">Subtotal</div><div class="grid_4">% Dto </div><div class="grid_2">Base</div><div class="grid_2">Impuesto</div><div class="grid_2">Total</div></div></li>');
+         $("#lvTotales").append('<li data-mini="true"><div class="container_12"><div class="grid_2" id="TotalBruto" >' + TotalBruto.toFixed(2).toString() + '</div><div class="grid_4" id="TotalDescuento">' + TotalDescuento.toFixed(2).toString() + '</div><div class="grid_2" id="TotalNeto">' + TotalNeto.toFixed(2).toString() + '</div><div class="grid_2" id="TotalImpuesto">' + TotalImpuesto.toFixed(2).toString() + '</div><div class="grid_2" id="TotalPedido">' + TotalBruto.toFixed(2).toString() + '</div></div></li>');
+         $('#lvTotales').listview('refresh', true);
+        // $("#detalle1").trigger("create");
+
+     }
+
+     $(document).delegate('#AddItem', 'click', function () {
+         var sParams = "Action=1@Pedido=" + Pedido.toString() + "@Visita=" + Visita.toString() + "@Cliente=" + Cliente.toString();
+         localStorage['Action'] = "1";
+         localStorage['Pedido'] = Pedido.toString();
+         localStorage['Visita'] = Visita.toString();
+         localStorage['Cliente'] = Cliente.toString();
+         localStorage['From'] = "VentasLineas";
+         window.location.assign("ArticulosSeleccion.html");
+         //window.location.href = "ArticulosSeleccion.html?From=VentasLineas&Params=" + sParams.toString();
+     })
+
+    
+     $(document).delegate('#buttonsave', 'click', function () {
+
+         if (document.getElementById("txtFechaEntrega").value == null) {
+             alert("Debe introducir la Fecha de Entrega del Pedido.");
+             return;
+         }
+
+         var sComments = document.getElementById("txtCommentsVisita").value.toString();
+         sComments = sComments.replace(/^\s*|\s*$/g, "");
+         if (sComments == "") {
+             alert("Debe introducir los comentarios de la visita.");
+             return;
+         }
+
+         var ret = confirm("Desea guardar el Pedido " + Pedido.toString() + " ?")
+         if (ret) SaveOrder();
+
+     })
+
+    
+     $(document).delegate('#buttoncancel', 'click', function () {
+
+         var ret = confirm("Desea salir sin guardar las lineas de Pedido " + Pedido.toString() + " ?")
+         if (ret) {
+             DeleteOrder(Pedido, errorfunction);
+             window.location.assign("index.html");
+         }
+
+     })
+
+     function SaveOrder() {
+
+
+         try {
+             myDB.transaction(
+                    function (transaction) {
+
+                        var sQuery = "INSERT INTO AX_RDR1 SELECT * FROM AX_TEMP_RDR1 " +
+                          " WHERE AX_TEMP_RDR1.IdOrdr = " + Pedido.toString() + " AND Quantity >0";
+                        transaction.executeSql(sQuery, [], SaveExtraData(), killTransaction);
+
+
+                        //SaveOrderLines(Pedido, GotoIndex(), errorfunction);
+
+
+                        //window.location.assign('index.html');
+                    }
+                );
+              
+
+         }
+         catch (e) {
+             errorfunction(e);
+         }
+     }
+
+     function SaveExtraData() {
+         myDB.transaction(
+            function (transaction) {
+                var sSQL = "UPDATE AX_VISITAS SET Comments= '" + document.getElementById("txtCommentsVisita").value + "' WHERE Id = " + Visita.toString();
+                transaction.executeSql(sSQL, SaveExtraData2(), errorHandler);
+
+//                sSQL = "UPDATE AX_ORDR SET Comments= '" + document.getElementById("txtCommentsPedido").value + "',DueDate = '" + document.getElementById("txtFechaEntrega").value + "',Total = " + TotalBruto.toFixed(2).toString() + " WHERE Id = " + Pedido.toString();
+//                transaction.executeSql(sSQL, GotoIndex(), errorHandler);
+            }
+        );
+        }
+
+        function SaveExtraData2() {
+            myDB.transaction(
+            function (transaction) {
+                //                var sSQL = "UPDATE AX_VISITAS SET Comments= '" + document.getElementById("txtCommentsVisita").value + "' WHERE Id = " + Visita.toString();
+                //                transaction.executeSql(sSQL, nullDataHandler, errorHandler);
+
+                RecalcularTotales();
+
+                var sComments = document.getElementById("txtCommentsPedido").value;
+                var sDate = document.getElementById("txtFechaEntrega").value;
+                var sTotalBruto = TotalPedido.toFixed(2).toString();
+
+                //sSQL = "UPDATE AX_ORDR SET Comments= '" + document.getElementById("txtCommentsPedido").value + "',DueDate = '" + document.getElementById("txtFechaEntrega").value + "',Total = " + TotalBruto.toFixed(2).toString() + " WHERE Id = " + Pedido.toString();
+                transaction.executeSql("UPDATE AX_ORDR SET Comments= ? ,DueDate = ?, Total = ? WHERE Id = ?", [sComments, sDate, sTotalBruto, Pedido.toString()], GotoIndex(), errorHandler);
+            }
+        );
+        }
+
+    
+
+     function successfunction() {
+         $.mobile.hidePageLoadingMsg();
+     }
+
+     function errorHandler(transaction, error) {
+         //alert(error.message + ' (Code ' + error.code + ')');
+         return true;
+     }
+
+     function nullDataHandler(transaction, results) {
+     }
+
+     function errorfunction(e) {
+         if (e == DOMException.INVALID_STATE_ERR) {
+
+             alert("Invalid database version.");
+         } else {
+             alert("Unknown error " + e + ".");
+         }
+         $.mobile.hidePageLoadingMsg();
+     }
+
+ 
+
+
+     function GetStorageValue(sKey) {
+         var value;
+         value = localStorage[sKey];
+ 
+         localStorage.removeItem(sKey);
+
+         if (value == "null")
+             value = null;
+
+         return value;
+     }
+
+     function GotoIndex() {
+         window.location.assign('index.html');
+     }
+
+     function GotoMenu(sLink) {
+         if (confirm("Desea salir sin guardar las lineas del Pedido ?", "Ferrer"))
+             window.location.assign(sLink);
+     }
+
+     function GotoCabecera() {
+         if (confirm("Desea salir sin guardar las lineas del Pedido ?", "Ferrer")) {
+             localStorage['Cliente'] = Cliente;
+             localStorage['Visita'] = Visita;
+             localStorage['Pedido'] = Pedido;
+             window.location.assign("VentasPedido.html");
+         }
+     }
+
+</script>
+
+<body>
+
+         <div data-role="page" data-theme="c"  id="detalle1">
+
+	        <div data-role="header">
+	            <h1 id="toptitle">Detalle Pedido</h1>
+                <a href="javascript:GotoMenu('index.html');" data-icon="home">Inicio</a>
+            </div>
+
+ 
+
+	             <div data-role="content"  >	
+
+                    
+		            <ul data-role="listview" data-inset="true" id= "lvDatosPedido" data-mini="true">
+                       <li data-role='list-divider'>Datos Cliente
+                       </li>
+
+                       <li id ="liCliente" data-mini="true"></li>
+                       <li id ="liNombreCliente" data-mini="true"></li>
+
+                      
+                <li data-role='list-divider'>Detalle Pedido
+                 </li>
+                  <div data-role="navbar" data-iconpos="left">
+	                <ul>
+    	                <li><a href="#" data-ajax="false" id="AddItem" data-role="button" >Añadir Articulo</a> </li>
+		                <li><a href="javascript:ResetLines();" data-ajax="false" >Inicializar</a> </li>
+                        <li><a href="javascript:DeleteLines();" data-ajax="false" >Limpiar</a> </li>
+	                </ul>
+                </div>
+
+                <li> 
+                  <div  data-theme="a">
+                         <!--<ul data-role="listview" data-inset="true" id= "lvLineas" data-split-icon="delete" data-split-theme="d" data-divider-theme ="c" > -->
+                         <ul data-role="listview"   id= "lvLineas" data-split-icon="delete" data-split-theme="d" data-divider-theme ="c" > 
+
+                         <!--<ul data-role="listview"  id= "lvLineas"  data-divider-theme ="c" data-mini="true">-->
+
+
+                    </ul>
+                </div>
+               </li>
+
+               <li data-role='list-divider'>Totales</li>
+
+               <li> 
+                     <div class='container_12' data-theme="e">
+                         <ul data-role="listview" data-mini="true"  id="lvTotales" data-inset="true" id= "Ul1" data-theme="e" data-divider-theme="e">
+
+ 
+                        <li data-role='list-divider' data-mini="true">
+                            <div class='container_12'>
+                                <div class='grid_2' id="TotalBruto">Subtotal</div> 
+                                <div class='grid_4'>% Dto </div> 
+                                <div class='grid_2' id="TotalNeto">Base</div> 
+                                <div class='grid_2'>Impuesto</div> 
+                                <div class='grid_2' id="TotalPedido">Total</div> 
+                            </div> 
+                        </li> 
+                       
+                    </div>
+                </li>
+
+          
+                <li data-role="fieldcontain">
+				        <fieldset data-role="controlgroup">
+			    	    <legend>Comentarios Pedido:</legend>
+                        <textarea  style="width:100%;" name="txtComments" id="txtCommentsPedido" value=""  rows= "20"/></textarea>
+			        </fieldset>
+			    </li>
+
+                 <li data-role="fieldcontain">
+				        <fieldset data-role="controlgroup">
+			    	    <legend>Comentarios Visita:</legend>
+                        <textarea  data-theme="e" style="width:100%;" name="txtComments" id="txtCommentsVisita" value=""  rows= "20"/></textarea>
+			        </fieldset>
+			    </li>
+                <li data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                       <legend>Fecha de Entrega:</legend>
+	                    <input type="date" name="date" id="txtFechaEntrega" value="" />
+                    </fieldset>
+			    </li>
+
+			  </ul>
+
+              <ul data-role="listview" data-inset="true" id= "Ul2">
+                    <li class="ui-body ui-body-b">
+				        <fieldset class="ui-grid-a">
+						        <div data-theme="b" class="ui-block-a"><button id="buttoncancel"  data-theme="d">Cancelar</button></div>
+						        <div data-theme="b" class="ui-block-b"><button id="buttonsave" data-theme="a">Guardar</button></div>
+			            </fieldset>
+			        </li>
+
+			    </ul>
+
+
+             </div> 
+
+              <div data-role="footer" data-theme="c" data-position="fixed">
+                     <div align="center" style = "background-color: #243758; font-size:12px;"><img src="images/logo.png" alt="Ferrer"/> </div>
+
+             </div>
+        
+
+
+                        
+
+ 
+
+            <div data-role="popup" id="popuplinea" data-theme="e" class="ui-corner-all" data-history="false">
+
+				<div style="padding:10px 10px;">
+                  <h2 id="popupItem" ></h2>
+				  <h3 id="popupName" ></h3>
+                  <input type="hidden" id="popuplineaId" value="" />
+
+                   
+                  <legend>Cantidad:</legend>
+                  <input id="popupCantidad" type="range" data-theme="c"  name="slider-fill" style="width:75px;font-size:larger; vertical-align: middle;"   value="1" min="0" max="20" data-highlight="true"  />
+    
+    <!--              
+                  <div class='container_12'>
+                      <div class='grid_3'>
+                         <input type="text" id="txtCantidad" value="23"  data-theme="c" style="width:95%;font-size:larger;"/>
+                      </div>
+                      <div class='grid_9' id="div-slider">
+                        <input id="popupCantidad" type="range" data-theme="c"  name="slider-fill" style="width:100%;font-size:larger; vertical-align: middle; padding-top: 12px;"   value="1" min="0" max="20" data-highlight="true" class="ui-hidden-accessible" />
+                       </div>
+                   </div>
+                   -->
+                   
+<!--
+                  <legend>Cantidad:</legend>
+                
+                  <div class='container_12'>
+                    <div class='grid_6'><input type="text" id="popupCantidad" value="23"  data-theme="a" style="width:95%;font-size:larger"/></div>
+			        <div class='grid_6' data-role="controlgroup" data-type="horizontal"> 
+                        <a href="javascript:DecrementarCantidad();" data-role="button" data-icon="minus" data-iconpos="notext">Up</a> 
+			            <a href="javascript:IncrementarCantidad();" data-role="button" data-icon="plus" data-iconpos="notext">Down</a> 
+                    </div>
+		        </div>-->
+			 
+
+		         <legend>Cantidad Promoción:</legend>
+                
+                  <div class='container_12'>
+                    <div class='grid_3'><input type="text" id="popupPromocion" value="23"  data-theme="c" style="width:95%;font-size:larger;"/></div>
+			        <div class='grid_9' data-role="controlgroup" data-type="horizontal"> 
+                        <a href="javascript:DecrementarPromocion();" data-role="button" data-icon="minus" data-iconpos="notext">Up</a> 
+			            <a href="javascript:IncrementarPromocion();" data-role="button" data-icon="plus" data-iconpos="notext">Down</a> 
+                    </div>
+		        </div>
+
+                  <ul data-role="listview" data-inset="true" id= "Ul1" data-theme="c">
+                    <li class="ui-body ui-body-b">
+				        <fieldset class="ui-grid-a">
+						        <div  data-theme="b" class="ui-block-a"><button id="popupcancelar" >Cancelar</button></div>
+                                <div  data-theme="b" class="ui-block-b"><button id="popupaceptar" onclick="javascript:ModificarLinea();" >Aceptar</button></div>
+			            </fieldset>
+			        </li>
+
+			    </ul>
+
+				</div>
+		</div>
+
+              
+
+         </div>
+    
+</body>
+</html>

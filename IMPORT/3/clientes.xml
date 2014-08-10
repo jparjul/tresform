@@ -1,0 +1,721 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <OCRD>
+    <CardCode>C00327</CardCode>
+    <CardName>CLIENTE 000001</CardName>
+    <Address>C/ SANT JOAN, 1</Address>
+    <ZipCode>08720</ZipCode>
+    <MailAddres>C/ SANT JOAN, 1</MailAddres>
+    <MailZipCod>08720</MailZipCod>
+    <Phone1>93 892 07 56</Phone1>
+    <Notes />
+    <City>VILAFRANCA DEL PENEDES</City>
+    <Country>ES</Country>
+    <MailCity>VILAFRANCA DEL PENEDES</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>FRUITES CUGAT</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>FRUITES CUGAT</ShipToDef>
+    <LicTradNum>ES38283965M</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CUGAT SOLER, JOSEP</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C00507</CardCode>
+    <CardName>CLIENTE 000002</CardName>
+    <Address>C/ LLOBREGAT, 15</Address>
+    <ZipCode>08620</ZipCode>
+    <MailAddres>C/ LLOBREGAT, 15  BAIXOS</MailAddres>
+    <MailZipCod>08620</MailZipCod>
+    <Phone1>93 676 99 13</Phone1>
+    <Notes />
+    <City>SANT VICENÇ DELS HORTS</City>
+    <Country>ES</Country>
+    <MailCity>SANT VICENÇ DELS HORTS</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>ESTEVE OLARIA, M. CARMEN</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>ESTEVE OLARIA, M. CARMEN</ShipToDef>
+    <LicTradNum>ES38047809J</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>ESTEVE OLARIA, M. CARMEN</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C00599</CardCode>
+    <CardName>CLIENTE 000003</CardName>
+    <Address>C/ PI I MARAGALL, 10-13</Address>
+    <ZipCode>08770</ZipCode>
+    <MailAddres>C/ PI I MARAGALL, 10-12</MailAddres>
+    <MailZipCod>08770</MailZipCod>
+    <Phone1>93 891 14 03</Phone1>
+    <Notes />
+    <City>SANT SADURNI D'ANOIA</City>
+    <Country>ES</Country>
+    <MailCity>SANT SADURNI D'ANOIA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>GANADOS DEL PENEDES, S.A.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>GANADOS DEL PENEDES</ShipToDef>
+    <LicTradNum>ESA08892499</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>GANADOS DEL PENEDES, S.A.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C00792</CardCode>
+    <CardName>CLIENTE 000004</CardName>
+    <Address>C/ PAU CASALS, 108</Address>
+    <ZipCode>08820</ZipCode>
+    <MailAddres>C/ PAU CASALS, 108</MailAddres>
+    <MailZipCod>08820</MailZipCod>
+    <Phone1>93 478 05 42</Phone1>
+    <Notes />
+    <City>EL PRAT DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>EL PRAT DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>CARNISSERIA HERRERA, S.C.P.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CARNISSERIA HERRERA</ShipToDef>
+    <LicTradNum>ESJ62965439</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CARNISSERIA HERRERA,S.C.P.</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C00850</CardCode>
+    <CardName>CLIENTE 000005</CardName>
+    <Address>C/ LLOBREGAT, 59</Address>
+    <ZipCode>08904</ZipCode>
+    <MailAddres>C/ LLOBREGAT, 59</MailAddres>
+    <MailZipCod>08904</MailZipCod>
+    <Phone1>93 449 54 28</Phone1>
+    <Notes />
+    <City>HOSPITALET DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>HOSPITALET DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>MESEGUER LAZARO, DOLORES</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>MESEGUER LAZARO, DOLORES</ShipToDef>
+    <LicTradNum>ES38527742M</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>MESEGUER LAZARO, DOLORES</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C00998</CardCode>
+    <CardName>CLIENTE 000006</CardName>
+    <Address>C/ PADRO, 18</Address>
+    <ZipCode>08690</ZipCode>
+    <MailAddres>C/ PADRO, 18</MailAddres>
+    <MailZipCod>08690</MailZipCod>
+    <Phone1>93 645 02 58</Phone1>
+    <Notes />
+    <City>SANTA COLOMA DE CERVELLO</City>
+    <Country>ES</Country>
+    <MailCity>SANTA COLOMA DE CERVELLO</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>SALUD FRUITS, S.C.P.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>SALUD FRUITS</ShipToDef>
+    <LicTradNum>ESJ62670625</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>SALUD FRUITS, S.C.P.</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01069</CardCode>
+    <CardName>CLIENTE 000007</CardName>
+    <Address>C/ JOSEP RICART, 13 BIS</Address>
+    <ZipCode>08980</ZipCode>
+    <MailAddres>C/ JOSEP RICART, 13 BIS</MailAddres>
+    <MailZipCod>08980</MailZipCod>
+    <Phone1>93 666 14 35</Phone1>
+    <Notes />
+    <City>SANT FELIU DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>SANT FELIU DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>RIBAS LOPEZ, JOSEP</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>JOSEP RIBAS LOPEZ</ShipToDef>
+    <LicTradNum>ES38046301T</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>RIBAS LOPEZ, JOSEP</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01195</CardCode>
+    <CardName>CLIENTE 000008</CardName>
+    <Address>C/ OCCIDENT, 55</Address>
+    <ZipCode>08904</ZipCode>
+    <MailAddres>C/ OCCIDENT, 55</MailAddres>
+    <MailZipCod>08904</MailZipCod>
+    <Phone1>666 88 79 07 X IMPOR</Phone1>
+    <Notes />
+    <City>HOSPITALET DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>HOSPITALET DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>KAMI, S.C.P.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>KAMI, S.C.P.</ShipToDef>
+    <LicTradNum>ESG63558464</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>KAMI, S.C.P.</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01493</CardCode>
+    <CardName>CLIENTE 000009</CardName>
+    <Address>PLAÇA GAUDI, 6</Address>
+    <ZipCode>08754</ZipCode>
+    <MailAddres>PLAÇA GAUDI, 6</MailAddres>
+    <MailZipCod>08754</MailZipCod>
+    <Phone1>93 673 14 21</Phone1>
+    <Notes />
+    <City>EL PAPIOL</City>
+    <Country>ES</Country>
+    <MailCity>EL PAPIOL</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>VILELLA SALA, TRINITAT</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>VILELLA SALA, TRINITAT</ShipToDef>
+    <LicTradNum>ES37978985M</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>VILELLA SALA, TRINITAT</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01580</CardCode>
+    <CardName>CLIENTE 000010</CardName>
+    <Address>FRANCESC MACIA, S/N "MERCAT SANT SALVADOR, PDA. 3"</Address>
+    <ZipCode>08720</ZipCode>
+    <MailAddres>FRANCESC MACIA, S/N "MERCAT SANT SALVADOR, PDA. 3"</MailAddres>
+    <MailZipCod>08720</MailZipCod>
+    <Phone1>93 890 04 69</Phone1>
+    <Notes />
+    <City>VILAFRANCA DEL PENEDES</City>
+    <Country>ES</Country>
+    <MailCity>VILAFRANCA DEL PENEDES</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>PESCA SALADA</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>PESCA SALADA</ShipToDef>
+    <LicTradNum>ES38167849Q</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>FERRE VIA, MARGARIDA</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01653</CardCode>
+    <CardName>CLIENTE 000011</CardName>
+    <Address>C/ ANGEL GUIMERA, 15</Address>
+    <ZipCode>08840</ZipCode>
+    <MailAddres>C/ ANGEL GUIMERA, 15</MailAddres>
+    <MailZipCod>08840</MailZipCod>
+    <Phone1>93 658 87 61</Phone1>
+    <Notes />
+    <City>VILADECANS</City>
+    <Country>ES</Country>
+    <MailCity>VILADECANS</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>OLIVE LOMBERTE, PEPITA</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CANSALADERIA - XARCUTERIA OLIVE</ShipToDef>
+    <LicTradNum>ES37641547T</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>OLIVE LOMBERTE, PEPITA</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01696</CardCode>
+    <CardName>CLIENTE 000012</CardName>
+    <Address>C/ HOSPITAL, 12</Address>
+    <ZipCode>08770</ZipCode>
+    <MailAddres>C/ HOSPITAL, 12</MailAddres>
+    <MailZipCod>08770</MailZipCod>
+    <Phone1>93 891 02 92</Phone1>
+    <Notes />
+    <City>SANT SADURNI D'ANOIA</City>
+    <Country>ES</Country>
+    <MailCity>SANT SADURNI D'ANOIA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>BARGALLO TENA, MIQUEL</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>BARGALLO TENA, MIQUEL</ShipToDef>
+    <LicTradNum>ES77308607H</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>BARGALLO TENA, MIQUEL</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01697</CardCode>
+    <CardName>CLIENTE 000013</CardName>
+    <Address>PLAÇA PAU CASALS, 18</Address>
+    <ZipCode>08770</ZipCode>
+    <MailAddres>PLAÇA PAU CASALS, 18</MailAddres>
+    <MailZipCod>08770</MailZipCod>
+    <Phone1>93 891 09 16</Phone1>
+    <Notes />
+    <City>SANT SADURNI D'ANOIA</City>
+    <Country>ES</Country>
+    <MailCity>SANT SADURNI D'ANOIA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>AMAT IBANEZ, M. DOLORS</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>AMAT IBANEZ, M. DOLORS</ShipToDef>
+    <LicTradNum>ES79285062Z</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>AMAT IBANEZ, M. DOLORS</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01733</CardCode>
+    <CardName>CLIENTE 000014</CardName>
+    <Address>AVDA. BARCELONA, 40</Address>
+    <ZipCode>08750</ZipCode>
+    <MailAddres>AVDA. BARCELONA, 40</MailAddres>
+    <MailZipCod>08750</MailZipCod>
+    <Phone1>93 668 17 99</Phone1>
+    <Notes />
+    <City>MOLINS DE REI</City>
+    <Country>ES</Country>
+    <MailCity>MOLINS DE REI</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>PONS BARRACHINA, JAUME</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>PONS BARRACHINA, JAUME</ShipToDef>
+    <LicTradNum>ES36748803R</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>PONS BARRACHINA, JAUME</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01774</CardCode>
+    <CardName>CLIENTE 000015</CardName>
+    <Address>C/ VINYALA, 6</Address>
+    <ZipCode>08620</ZipCode>
+    <MailAddres>C/ VINYALA, 6</MailAddres>
+    <MailZipCod>08620</MailZipCod>
+    <Phone1>93 656 55 45</Phone1>
+    <Notes />
+    <City>SANT VICENÇ DELS HORTS</City>
+    <Country>ES</Country>
+    <MailCity>SANT VICENÇ DELS HORTS</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>TORRONTERAS BLANCO, JUANA</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>PEIX I MARISC JUANI</ShipToDef>
+    <LicTradNum>ES52190458P</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>TORRONTERAS BLANCO, JUANA</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01811</CardCode>
+    <CardName>CLIENTE 000016</CardName>
+    <Address>PLAÇA VERDAGUER, 7</Address>
+    <ZipCode>08786</ZipCode>
+    <MailAddres>PLAÇA VERDAGUER, 7</MailAddres>
+    <MailZipCod>08786</MailZipCod>
+    <Phone1>93 801 31 68</Phone1>
+    <Notes />
+    <City>CAPELLADES</City>
+    <Country>ES</Country>
+    <MailCity>CAPELLADES</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>VIVES RIBA, CARME</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CARME VIVES - PLAÇA VERDAGUER</ShipToDef>
+    <LicTradNum>ES79275670Y</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>VIVES RIBA, CARME</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02015</CardCode>
+    <CardName>CLIENTE 000017</CardName>
+    <Address>C/ MAJOR, 7</Address>
+    <ZipCode>08782</ZipCode>
+    <MailAddres>C/ MAJOR, 7</MailAddres>
+    <MailZipCod>08782</MailZipCod>
+    <Phone1>93 772 50 26</Phone1>
+    <Notes />
+    <City>BEGUDA ALTA</City>
+    <Country>ES</Country>
+    <MailCity>BEGUDA ALTA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>CANALS FERRER, DAVID</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>DAVID CANALS FERRER</ShipToDef>
+    <LicTradNum>ES38505794E</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CANALS FERRER, DAVID</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02060</CardCode>
+    <CardName>CLIENTE 000018</CardName>
+    <Address>AVDA. CARRILET,  219  NAVE 1</Address>
+    <ZipCode>08901</ZipCode>
+    <MailAddres>AVDA. CARRILET, 219  NAVE 1</MailAddres>
+    <MailZipCod>08901</MailZipCod>
+    <Phone1>93 260 24 24</Phone1>
+    <Notes />
+    <City>HOSPITALET DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>HOSPITALET DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>COMESTIBLES ZAFON, S.L.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>COMESTIBLES ZAFON, S.L.</ShipToDef>
+    <LicTradNum>ESB58080250</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>COMESTIBLES ZAFON, S.L.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02168</CardCode>
+    <CardName>CLIENTE 000019</CardName>
+    <Address>C/ PROGRES, 36</Address>
+    <ZipCode>08904</ZipCode>
+    <MailAddres>C/ DE L'OCCIDENT - MERCAT COLLBLANC, PARADA 203</MailAddres>
+    <MailZipCod>08904</MailZipCod>
+    <Phone1>93 449 53 31 CASA</Phone1>
+    <Notes />
+    <City>HOSPITALET DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>HOSPITALET DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>LLUIS MARTI, JOSE</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>LLUIS MARTI, JOSE</ShipToDef>
+    <LicTradNum>ES38352879B</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>LLUIS MARTI, JOSE</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02260</CardCode>
+    <CardName>CLIENTE 000020</CardName>
+    <Address>C/ DOCTOR MARTI I JULIA, 128</Address>
+    <ZipCode>08903</ZipCode>
+    <MailAddres>C/ DOCTOR MARTI I JULIA, 128</MailAddres>
+    <MailZipCod>08903</MailZipCod>
+    <Phone1>93 333 42 89</Phone1>
+    <Notes />
+    <City>HOSPITALET DE LLOBREGAT</City>
+    <Country>ES</Country>
+    <MailCity>HOSPITALET DE LLOBREGAT</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>SOLDEVILA XARCUTERIES, S.L.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>SOLDEVILA XARCUTERIES, S.L.</ShipToDef>
+    <LicTradNum>ESB62160247</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>SOLDEVILA XARCUTERIES, S.L.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02309</CardCode>
+    <CardName>CLIENTE 000021</CardName>
+    <Address>AVDA. TARRAGONA, 41</Address>
+    <ZipCode>08720</ZipCode>
+    <MailAddres>C/ SOLETAT, 36</MailAddres>
+    <MailZipCod>08720</MailZipCod>
+    <Phone1>93 890 14 16</Phone1>
+    <Notes />
+    <City>VILAFRANCA DEL PENEDES</City>
+    <Country>ES</Country>
+    <MailCity>VILAFRANCA DEL PENEDES</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>CARNS UBERNI, S.L.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CARNS UBERNI</ShipToDef>
+    <LicTradNum>ESB62762273</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CARNS UBERNI, S.L.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02320</CardCode>
+    <CardName>CLIENTE 000022</CardName>
+    <Address>C/ JOAN MARAGALL, 24</Address>
+    <ZipCode>08770</ZipCode>
+    <MailAddres>C/ JOAN MARAGALL, 24</MailAddres>
+    <MailZipCod>08770</MailZipCod>
+    <Phone1>93 899 32 02</Phone1>
+    <Notes />
+    <City>SANT SADURNI D'ANOIA</City>
+    <Country>ES</Country>
+    <MailCity>SANT SADURNI D'ANOIA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>RESTAURANT CAVES CANALS</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>RESTAURANT CAVES CANALS</ShipToDef>
+    <LicTradNum>ES61629531G</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>PERE CANALS CASANOVAS</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01863</CardCode>
+    <CardName>CLIENTE 000023</CardName>
+    <Address>AUTOVIA BARNA-LLEIDA, KM. 570</Address>
+    <ZipCode>08294</ZipCode>
+    <MailAddres>AUTOVIA BARNA-LLEIDA, KM. 570</MailAddres>
+    <MailZipCod>08294</MailZipCod>
+    <Phone1>93 771 00 61</Phone1>
+    <Notes />
+    <City>EL BRUC</City>
+    <Country>ES</Country>
+    <MailCity>EL BRUC</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>HOTEL BRUC, S.L.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>HOTEL BRUC, S.L.</ShipToDef>
+    <LicTradNum>ESB08595068</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>HOTEL BRUC, S.L.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01912</CardCode>
+    <CardName>CLIENTE 000024</CardName>
+    <Address>C/ PERE PUIG, 3 1r</Address>
+    <ZipCode>08760</ZipCode>
+    <MailAddres>C/ PERE PUIG, 3 1r</MailAddres>
+    <MailZipCod>08760</MailZipCod>
+    <Phone1>93 775 33 58</Phone1>
+    <Notes />
+    <City>MARTORELL</City>
+    <Country>ES</Country>
+    <MailCity>MARTORELL</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>CATERING CUIN. CASANOVAS, S.L.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CATERING CUINATS CASANOVAS</ShipToDef>
+    <LicTradNum>ESB61752283</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CATERING CUIN. CASANOVAS, S.L.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C01995</CardCode>
+    <CardName>CLIENTE 000025</CardName>
+    <Address>C/ PI I MARAGALL, 10</Address>
+    <ZipCode>08777</ZipCode>
+    <MailAddres>C/ PI I MARAGALL, 10</MailAddres>
+    <MailZipCod>08777</MailZipCod>
+    <Phone1>93 899 92 27</Phone1>
+    <Notes />
+    <City>SANT QUINTI DE MEDIONA</City>
+    <Country>ES</Country>
+    <MailCity>SANT QUINTI DE MEDIONA</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>QUEVIURES SOLER, S.A.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>QUEVIURES SOLER, S.A.</ShipToDef>
+    <LicTradNum>ESA58074733</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>QUEVIURES SOLER, S.A.</BillToDef>
+    <RecEquivalencia>N</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02007</CardCode>
+    <CardName>CLIENTE 000026</CardName>
+    <Address>C/ SANT JORDI, 6</Address>
+    <ZipCode>08733</ZipCode>
+    <MailAddres>C/ SANT JORDI, 6</MailAddres>
+    <MailZipCod>08733</MailZipCod>
+    <Phone1>93 898 81 30</Phone1>
+    <Notes />
+    <City>EL PLA DEL PENEDES</City>
+    <Country>ES</Country>
+    <MailCity>EL PLA DEL PENEDES</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>QUERALTO SEGARRA, PERE</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>QUERALTO SEGARRA, PERE</ShipToDef>
+    <LicTradNum>ES77288441T</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>QUERALTO SEGARRA, PERE</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02370</CardCode>
+    <CardName>CLIENTE 000027</CardName>
+    <Address>PLAÇA CATALUNYA, 29</Address>
+    <ZipCode>08750</ZipCode>
+    <MailAddres>PLAÇA CATALUNYA, 29</MailAddres>
+    <MailZipCod>08750</MailZipCod>
+    <Phone1>93 668 34 62</Phone1>
+    <Notes />
+    <City>MOLINS DE REI</City>
+    <Country>ES</Country>
+    <MailCity>MOLINS DE REI</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>CAL MANYET, S.C.P.</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CAL MANYET - MOLINS DE REI</ShipToDef>
+    <LicTradNum>ESJ62310966</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>CAL MANYET, S.C.P.</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02371</CardCode>
+    <CardName>CLIENTE 000028</CardName>
+    <Address>PLAÇA VILA, 9</Address>
+    <ZipCode>08760</ZipCode>
+    <MailAddres>PLAÇA VILA, 9</MailAddres>
+    <MailZipCod>08760</MailZipCod>
+    <Phone1>93 775 01 01</Phone1>
+    <Notes />
+    <City>MARTORELL</City>
+    <Country>ES</Country>
+    <MailCity>MARTORELL</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>MORRAL CENTELLES, ALFONSO</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>CARNISSERIA MORRAL</ShipToDef>
+    <LicTradNum>ES37681234N</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>MORRAL CENTELLES, ALFONSO</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <OCRD>
+    <CardCode>C02374</CardCode>
+    <CardName>CLIENTE 000029</CardName>
+    <Address>C/ JACINTO VERDAGUER, 36</Address>
+    <ZipCode>08970</ZipCode>
+    <MailAddres>C/ JACINTO VERDAGUER, 36</MailAddres>
+    <MailZipCod>08970</MailZipCod>
+    <Phone1>93 477 07 14</Phone1>
+    <Notes />
+    <City>SANT JOAN DESPI</City>
+    <Country>ES</Country>
+    <MailCity>SANT JOAN DESPI</MailCity>
+    <MailCountr>ES</MailCountr>
+    <CardFName>FRUITERIA PURI</CardFName>
+    <State1>Barcelona</State1>
+    <State2>Barcelona</State2>
+    <ShipToDef>FRUITERIA PURI</ShipToDef>
+    <LicTradNum>ES38408100D</LicTradNum>
+    <BankCountr>ES</BankCountr>
+    <BillToDef>RAYA SOJO, RAFAEL</BillToDef>
+    <RecEquivalencia>Y</RecEquivalencia>
+  </OCRD>
+  <CRD1>
+    <Address>AGROBOTIGA DEL MONTSERRATI</Address>
+    <CardCode>C00327</CardCode>
+    <Street>C/ MUNTANYA, 28</Street>
+    <ZipCode>08293</ZipCode>
+    <City>COLLBATO</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ESB65662157</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>ALIMENTACIO LLOBET</Address>
+    <CardCode>C00327</CardCode>
+    <Street>C/ PI, 1</Street>
+    <ZipCode>08711</ZipCode>
+    <City>ODENA</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES77063034Q</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>ALIMENTACIO NATI</Address>
+    <CardCode>C00327</CardCode>
+    <Street>AVDA. GERMAN MARTI, 21-C</Street>
+    <ZipCode>08760</ZipCode>
+    <City>MARTORELL</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES77104349T</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>ALIMENTACION MARI</Address>
+    <CardCode>C00327</CardCode>
+    <Street>C/ DOCTOR FLEMING, 24</Street>
+    <ZipCode>08740</ZipCode>
+    <City>SANT ANDREU DE LA BARCA</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES38431262X</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>AMAT IBANEZ, M. DOLORS</Address>
+    <CardCode>C00507</CardCode>
+    <Street>PLAÇA PAU CASALS, 18</Street>
+    <ZipCode>08770</ZipCode>
+    <City>SANT SADURNI D'ANOIA</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES79285062Z</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>ANTONI SOLA CRISTIA</Address>
+    <CardCode>C00507</CardCode>
+    <Street>PLAÇA MAJOR, 4</Street>
+    <ZipCode>25337</ZipCode>
+    <City>BELLCAIRE D'URGELL</City>
+    <Name>Lleida</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES78086396Q</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>ANTONIA VILELLA LLOBERA</Address>
+    <CardCode>C00507</CardCode>
+    <Street>C/ MAJOR, 15</Street>
+    <ZipCode>25135</ZipCode>
+    <City>ALBESA</City>
+    <Name>Lleida</Name>
+    <Country>ES</Country>
+    <LicTradNum>ES40863754E</LicTradNum>
+  </CRD1>
+  <CRD1>
+    <Address>AREAS DE ALIMENTACION - ANGEL ARAÑO</Address>
+    <CardCode>C00507</CardCode>
+    <Street>C/ ANGEL ARAÑO, 40</Street>
+    <ZipCode>08840</ZipCode>
+    <City>VILADECANS</City>
+    <Name>Barcelona</Name>
+    <Country>ES</Country>
+    <LicTradNum>ESB60646668</LicTradNum>
+  </CRD1>
+ </NewDataSet>

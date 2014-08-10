@@ -1,0 +1,219 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery-mobile-960.min.css" />
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.css" />
+
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="jquery.mobile-1.1.0/modernizr.min.js"></script> 
+
+    <script src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+    <script src="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+    <script type="text/javascript" src="jquery.mobile-1.1.0/jquery.ui.autocomplete.min.js"></script>
+    <script type="text/javascript" src="jquery.mobile-1.1.0/jquery.ui.map.js"></script>
+	<script type="text/javascript" src="jquery.mobile-1.1.0/jquery.ui.map.services.js"></script>
+	<script type="text/javascript" src="jquery.mobile-1.1.0/jquery.ui.map.extensions.js"></script>
+
+
+    <link type="text/css" href="css/main.css" rel="stylesheet" />
+    <link type="text/css" href="css/jquery-ui/jquery-ui-1.8.16.custom.css" rel="stylesheet" /> 
+
+ 
+
+
+    <script type="text/javascript" src="demo.js"></script>
+    <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+
+    <script type="text/javascript" src="gmaps.js"></script>
+
+
+    <script type="text/javascript">
+
+
+        var Cliente = null;
+        var mobileDemo = { 'center': '41.401944,2.171389', 'zoom': 10 };
+
+        $("#localizacion").live("pageinit", function (event) {
+
+        });
+
+        function RefreshCliente() {
+            var sAddress;
+
+            Cliente = GetStorageValue("Cliente");
+            sAddress = "";
+
+            if (Cliente != null) {
+
+                myDB = OpenDatabase(successfunction, errorfunction);
+
+                myDB.transaction(function (tx) {
+
+                    tx.executeSql("SELECT * FROM AX_OCRD WHERE CardCode = ?", [Cliente], function (tx, result) {
+
+                        if ((result.rows.item(0)['Address'] != null) && (result.rows.item(0)['City'] != null)) {
+                            sAddress = result.rows.item(0)['Address'].toString() + " " + result.rows.item(0)['City'].toString();
+                        }
+
+                        $('#gmaps-input-address').text(sAddress);
+
+
+                    });
+                });
+            }
+            else {
+                $('#gmaps-input-address').text("");
+            }
+
+        } 
+
+
+        $('#basic_map').live('pageinit', function () {
+
+            RefreshCliente();
+
+            demo.add('basic_map', function () {
+                $('#map_canvas').gmap({ 'center': mobileDemo.center, 'zoom': mobileDemo.zoom, 'disableDefaultUI': true, 'callback': function () {
+//                    var self = this;
+//                    self.addMarker({ 'position': this.get('map').getCenter() }).click(function () {
+//                        self.openInfoWindow({ 'content': 'Hello World!' }, this);
+//                    });
+                } 
+                });
+            }).load('basic_map');
+        });
+
+        $('#basic_map').live('pageshow', function () {
+            RefreshCliente();
+            demo.add('basic_map', function () { $('#map_canvas').gmap('refresh'); }).load('basic_map');
+        });
+
+
+         function queryString(parameter) {
+            var loc = location.search.substring(1, location.search.length);
+            var param_value = false;
+            var params = loc.split("&");
+            for (i = 0; i < params.length; i++) {
+                param_name = params[i].substring(0, params[i].indexOf('='));
+                if (param_name == parameter) {
+                    param_value = params[i].substring(params[i].indexOf('=') + 1)
+                }
+            }
+            if (param_value) {
+                return param_value;
+            }
+            else {
+                return null;  
+            }
+        }
+
+
+
+        function successfunction() {
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        function errorHandler(transaction, error) {
+            Alert(error.message + ' (Code ' + error.code + ')');
+            return true;
+        }
+
+        function nullDataHandler(transaction, results) {
+        }
+
+        function errorfunction(e) {
+            if (e == DOMException.INVALID_STATE_ERR) {
+
+                Alert("Invalid database version.");
+            } else {
+                Alert("Unknown error " + e + ".");
+            }
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        function GetStorageValue(sKey) {
+            var value;
+            value = localStorage[sKey];
+            //localStorage[sKey] = null; 
+            localStorage.removeItem(sKey);
+
+            if (value == "null")
+                value = null;
+
+            return value;
+        }	
+
+ 
+</script>
+</head> 
+
+<body>
+
+        <!-- Pàgina principal ---------------------------------------------------->
+
+
+
+            <div id="localizacion" data-role="page">
+
+			<div data-role="header">
+	            <a href="javascript:window.location.assign('index.html');" data-icon="home">Inicio</a>
+	            <h1>Clientes</h1>
+	            <a href="javascript:localStorage['From']='RuteroLocalizacion';window.location.assign('ClientesSeleccion.html');" data-role="button" data-transition="pop"   data-icon="check" data-theme="b" data-ajax="false">Selección Cliente</a>
+
+            </div>
+            <div data-role="navbar">
+	            <ul>
+		            <li><a href="javascript:window.location.assign('RuteroLocalizacion.html');" data-ajax="false" class="ui-btn-active ui-state-persist">Localización</a> </li>
+		            <li><a href="javascript:window.location.assign('RuteroRuta.html');" data-ajax="false" >Ruta</a> </li>
+                    <li><a href="javascript:window.location.assign('RuteroMapa.html');" data-ajax="false" >Mapa</a> </li>
+	            </ul>
+            </div>
+
+			<div data-role="content">
+
+                 <!--<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;" data-role="fieldcontain">-->
+                 <ul data-role="listview" data-inset="true" id= "Ul1">
+                    
+					<li data-role='list-divider'>Dirección Cliente</li>
+
+					<li>
+						<input id='gmaps-input-address' class="ui-bar-c" type="text" value=""  placeholder='Introduzca una dirección o seleccione un cliente...'/>
+					</li>
+                    <div id='gmaps-error'></div>
+				 </ul>
+
+
+				<div class="ui-bar-c ui-corner-all ui-shadow" style="padding:1em;">
+					<div id="gmaps-canvas" style="height:700px;"></div>
+				</div>
+
+                <div data-role="footer"  data-position="fixed" >
+                     <div data-role="navbar" data-iconpos="top">
+                          <ul>
+                             <li><a href="javascript:window.location.assign('VentasInicio.html');"  data-icon="plus" data-prefetch="true"  >Ventas/Visitas</a></li>
+                             <li><a href="javascript:window.location.assign('ClientesGeneral.html');"  data-icon="back" >Interlocutores</a></li>
+                             <li><a href="javascript:window.location.assign('Articulos.html');"  data-icon="back" >Articulos</a></li>
+                             <li><a href="javascript:window.location.assign('HerramientasMenu.html');"  data-icon="back" >Herramientas</a></li>
+                            </ul>                
+                    </div>
+                </div>
+				
+			</div>
+		</div>
+
+       
+
+
+
+        
+
+</body>
+</html>
+
+ 

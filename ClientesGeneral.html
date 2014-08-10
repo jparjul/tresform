@@ -1,0 +1,214 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1">
+
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery-mobile-960.min.css" />
+    <link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css" />
+    <script src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+
+      
+    <script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+     <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+
+
+    <script type="text/javascript">
+
+        var Cliente = null;
+        var NombreCliente = "";
+
+
+
+
+        $("#pagecli1").live("pageinit", function (event) {
+
+            Cliente = GetStorageValue("Cliente");
+
+            if (Cliente != null) {
+
+                myDB = OpenDatabase(successfunction, errorfunction);
+
+                myDB.transaction(function (tx) {
+
+                    tx.executeSql("SELECT * FROM AX_OCRD WHERE CardCode = ?", [Cliente], function (tx, result) {
+                        dataset = result.rows;
+
+                        var sInitText = "<li><div class='container_12'><div class='grid_4'>";
+                        var sMidText = "</div><div class='grid_8'>";
+                        var sEndText = "</div></div></li>";
+
+                        NombreCliente = result.rows.item(0)['CardName'].toString();
+
+                        var sText = "";
+                        sText += "<li data-role='list-divider'>General</li>";
+                        sText += sInitText + "Persona de Contacto:" + sMidText + result.rows.item(0)['CntctPrsn'] + sEndText;
+                        sText += sInitText + "Telefono:" + sMidText + result.rows.item(0)['Phone1'] + sEndText;
+                        sText += sInitText + "Movil:" + sMidText + result.rows.item(0)['Phone2'] + sEndText;
+                        sText += sInitText + "Fax:" + sMidText + result.rows.item(0)['Fax'] + sEndText;
+                        sText += sInitText + "E-Mail:" + sMidText + result.rows.item(0)['CardCode'] + sEndText;
+                        sText += sInitText + "NIF:" + sMidText + result.rows.item(0)['LicTradNum'] + sEndText;
+                        sText += sInitText + "TIF:" + sMidText + result.rows.item(0)['CardCode'] + sEndText;
+
+                        sText += "<li data-role='list-divider'>Dirección</li>";
+                        sText += sInitText + "Dirección:" + sMidText + result.rows.item(0)['Address'] + sEndText;
+                        sText += sInitText + "Población:" + sMidText + result.rows.item(0)['City'] + sEndText;
+                        sText += sInitText + "CP:" + sMidText + result.rows.item(0)['ZipCode'] + sEndText;
+                        sText += sInitText + "Provincia:" + sMidText + sEndText;
+
+                        sText += "<li data-role='list-divider'>Clasificación</li>";
+                        sText += "<li>Clasificación Cliente:</li>";
+                        sText += "<li>Canal:</li>";
+
+                        $("#lvDatosCliente").append(sText);
+                        $("#lvDatosCliente").listview("refresh");
+
+                    });
+                });
+            }
+            else {
+                var sText = "";
+                sText += "<li data-role='list-divider'>General</li>";
+                sText += "<li>Persona de Contacto:</li>";
+                sText += "<li>Telefono:</li>";
+                sText += "<li>Movil:</li>";
+                sText += "<li>Fax:</li>";
+                sText += "<li>E-Mail:</li>";
+                sText += "<li>NIF:</li>";
+                sText += "<li>TIF:</li>";
+                sText += "<li data-role='list-divider'>Dirección</li>";
+                sText += "<li>Dirección:</li>";
+                sText += "<li>Población:</li>";
+                sText += "<li>CP:</li>";
+                sText += "<li>Provincia:</li>";
+                sText += "<li>Pais:</li>";
+                sText += "<li data-role='list-divider'>Clasificación</li>";
+                sText += "<li>Clasificación Cliente:</li>";
+                sText += "<li>Canal:</li>";
+                $("#lvDatosCliente").append(sText);
+                $("#lvDatosCliente").listview("refresh");
+            }
+
+        });
+
+        function queryString(parameter) {
+            var loc = location.search.substring(1, location.search.length);
+            var param_value = false;
+            var params = loc.split("&");
+            for (i = 0; i < params.length; i++) {
+                param_name = params[i].substring(0, params[i].indexOf('='));
+                if (param_name == parameter) {
+                    param_value = params[i].substring(params[i].indexOf('=') + 1)
+                }
+            }
+            if (param_value) {
+                return param_value;
+            }
+            else {
+                return null; //Here determine return if no parameter is found
+            }
+        }
+
+        function successfunction() {
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        function errorHandler(transaction, error) {
+            Alert(error.message + ' (Code ' + error.code + ')');
+            return true;
+        }
+
+        function nullDataHandler(transaction, results) {
+        }
+
+        function errorfunction(e) {
+            if (e == DOMException.INVALID_STATE_ERR) {
+
+                Alert("Invalid database version.");
+            } else {
+                Alert("Unknown error " + e + ".");
+            }
+            $.mobile.hidePageLoadingMsg();
+        }
+
+        function GetStorageValue(sKey) {
+            var value;
+            value = localStorage[sKey];
+            //localStorage[sKey] = null; 
+            localStorage.removeItem(sKey);
+
+            if (value == "null")
+                value = null;
+
+            return value;
+        }
+
+        function GotoClientesVentas() {
+            if (Cliente == null) {
+                alert("Debe seleccionar un Cliente.");
+                return;
+            }
+
+            localStorage['Cliente'] = Cliente;
+            localStorage['NombreCliente'] = NombreCliente;
+
+            window.location.assign('ClientesVentas.html');
+        }
+ 
+</script>
+</head> 
+
+<body>
+
+        <!-- Pàgina principal ---------------------------------------------------->
+
+         <div data-role="page" id="pagecli1" data-theme="c" data-title="Clientes General">
+
+	        <div data-role="header">
+	            <a href="javascript:window.location.assign('index.html');" data-icon="home">Inicio</a>
+	            <h1>Clientes</h1>
+	            <a href="javascript:localStorage['From']='ClientesGeneral';window.location.assign('ClientesSeleccion.html');" data-role="button" data-transition="pop"   data-icon="check" data-theme="b" data-ajax="false">Selección Cliente</a>
+            </div>
+
+            <div data-role="navbar">
+	            <ul>
+		            <li><a href="javascript:window.location.assign('ClientesGeneral.html');" class="ui-btn-active ui-state-persist">General</a> </li>
+		            <li><a href="javascript:GotoClientesVentas();">Ventas</a></li>
+                    <li><a href="ClientesCobros.html">Cobros</a></li>
+                    <li><a href="ClientesTam.html">Tam</a></li>
+                    <li><a href="#pagesel">Alta Cliente</a></li>
+	            </ul>
+            </div> 
+           
+
+            <div data-role="content"  >	
+
+		        <ul data-role="listview" data-inset="true" id= "lvDatosCliente">
+                    
+			    </ul>
+
+              </div>
+
+               <div data-role="footer"  data-position="fixed" >
+                    <div data-role="navbar" data-iconpos="top">
+                        <ul>
+                            <li><a href="javascript:window.location.assign('RuteroMenu.html');"  data-icon="back" >Rutero</a></li>
+                            <li><a href="javascript:window.location.assign('VentasInicio.html');"  data-icon="back" data-prefetch="true"  >Ventas/Visitas</a></li>
+                            <li><a href="javascript:window.location.assign('HerramientasMenu.html');"  data-icon="gear" >Herramientas</a></li>
+                            <li><a href="javascript:window.location.assign('Articulos.html');"  data-icon="back" >Articulos</a></li>
+                        </ul>                
+                </div>
+
+         </div>
+
+    
+
+
+</body>
+</html>
+
+ 
