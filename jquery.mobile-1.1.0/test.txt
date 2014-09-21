@@ -1,0 +1,33 @@
+ El volumen de la unidad C no tiene etiqueta.
+ El n£mero de serie del volumen es: CE95-8FEA
+
+ Directorio de C:\WORK\AX CONSULTING\FERRER\jquery.mobile-1.1.0
+
+10/09/2012  10:33    <DIR>          .
+10/09/2012  10:33    <DIR>          ..
+10/08/2012  19:39    <DIR>          images
+14/06/2012  21:22            54.117 jqm-datebox-1.1.0.core.js
+14/06/2012  21:16            31.996 jqm-datebox-1.1.0.core.min.js
+14/06/2012  21:17             5.424 jqm-datebox-1.1.0.min.css
+14/06/2012  21:22            14.744 jqm-datebox-1.1.0.mode.calbox.js
+14/06/2012  21:15             9.926 jqm-datebox-1.1.0.mode.calbox.min.js
+14/06/2012  21:24             6.437 jqm-datebox.css
+21/04/2012  19:53            93.868 jquery-1.7.1.min.js
+14/06/2012  20:07             4.251 jquery-mobile-960.min.css
+13/04/2012  12:22           238.388 jquery.mobile-1.1.0.js
+13/04/2012  12:22            60.702 jquery.mobile-1.1.0.min.css
+13/04/2012  12:22            90.946 jquery.mobile-1.1.0.min.js
+18/08/2012  18:24             1.006 jquery.mobile.simpledialog.min.css
+17/08/2012  19:50            10.300 jquery.mobile.simpledialog2.min.js
+13/04/2012  12:22            41.645 jquery.mobile.structure-1.1.0.css
+13/04/2012  12:22            36.429 jquery.mobile.structure-1.1.0.min.css
+13/04/2012  12:22            52.007 jquery.mobile.theme-1.1.0.css
+13/04/2012  12:22            24.380 jquery.mobile.theme-1.1.0.min.css
+22/08/2012  13:10            11.757 jquery.ui.autocomplete.min.js
+17/08/2012  22:15            10.950 jquery.ui.map.extensions.js
+17/08/2012  22:15            13.032 jquery.ui.map.js
+17/08/2012  22:15             3.144 jquery.ui.map.services.js
+21/08/2012  13:38             7.433 modernizr.min.js
+10/09/2012  10:33                 0 test.txt
+              23 archivos        822.882 bytes
+               3 dirs  14.455.382.016 bytes libres

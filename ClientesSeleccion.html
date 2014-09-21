@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.css" />
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery-mobile-960.min.css" />
+    <link type="text/css" href="jquery.mobile-1.1.0/jqm-datebox-1.1.0.min.css" rel="stylesheet" /> 
+
+    <script type="text/javascript" src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+ 
+
+<script type="text/javascript">
+
+    var fromPage;
+
+    $("#pagesel").live("pageinit", function (event) {
+
+        fromPage = GetStorageValue("From"); //queryString("From");
+
+        var myDB = OpenDatabase(successfunction, errorfunction);
+
+        myDB.transaction(function (tx) {
+            tx.executeSql('SELECT LTRIM(RTRIM(CardCode)) AS CardCode,CardName,City,Phone1 FROM AX_OCRD ORDER BY City,CardName', [], function (tx, result) {
+                dataset = result.rows;
+
+                var sText = "";
+
+                for (var i = 0; i < dataset.length; i++) {
+
+                    var CardCode = result.rows.item(i)['CardCode'];
+                    var CardName = result.rows.item(i)['CardName'];
+                    var City = result.rows.item(i)['City'];
+                    var Phone1 = result.rows.item(i)['Phone1'];
+
+                    sText += '<li><a href="javascript:SelectValue(\'' + CardCode + '\');" data-ajax="false">';
+                    sText += "<div class='container_12'>";
+                    sText += "<div class='grid_2' style = 'font-size:12px; font-style:normal'>" + CardCode + "</div>";
+                    sText += "<div class='grid_6' style = 'font-size:12px; font-style:normal'>" + CardName + "</div>";
+                    sText += "<div class='grid_2' style = 'font-size:12px; font-style:normal'>" + City + "</div>";
+                    sText += "<div class='grid_2' style = 'font-size:12px; font-style:normal'>" + Phone1 + "</div>";
+                    sText += "</div></li>";
+
+                }
+                sText += "</ul>";
+                $("#lvClientes").append(sText);
+                $("#lvClientes").listview("refresh");
+            });
+        });
+
+    });
+
+    function SelectValue( sValue)
+    {
+      localStorage['Cliente']=sValue;
+      window.location.assign(fromPage + ".html");
+    }
+
+    function queryString(parameter) {
+        var loc = location.search.substring(1, location.search.length);
+        var param_value = false;
+        var params = loc.split("&");
+        for (i = 0; i < params.length; i++) {
+            param_name = params[i].substring(0, params[i].indexOf('='));
+            if (param_name == parameter) {
+                param_value = params[i].substring(params[i].indexOf('=') + 1)
+            }
+        }
+        if (param_value) {
+            return param_value;
+        }
+        else {
+            return null;  
+        }
+    }
+
+    function successfunction() {
+        $.mobile.hidePageLoadingMsg();
+    }
+
+    function errorfunction(e) {
+        if (e == DOMException.INVALID_STATE_ERR) {
+
+            alert("Invalid database version.");
+        } else {
+            alert("Unknown error " + e + ".");
+        }
+        $.mobile.hidePageLoadingMsg();
+    }
+
+    function GetStorageValue(sKey) {
+        var value;
+        value = localStorage[sKey];
+        //localStorage[sKey] = null; 
+        //localStorage.removeItem(sKey);
+
+        if (value == "null")
+            value = null;
+
+        return value;
+    }
+ </script> 
+
+</head>
+
+
+<body>
+
+        <div data-role="page" id="pagesel" data-theme="c" data-title="Seleccion de Cliente" >
+
+	        <div data-role="header">
+	            <a data-rel="back" data-icon ="back">Anterior</a>
+	            <h1>Selección Clientes</h1>
+            </div>
+
+
+	        <div data-role="content" id ="content" >	
+		        
+                    <ul data-role='listview' data-inset='true' data-filter="true" data-filter-placeholder="Buscar clientes..." id='lvClientes'>
+                    <li data-role='list-divider'>
+                        <div class='container_12'>
+                            <div class='grid_2'>Código</div>
+                            <div class='grid_6'>Nombre</div>
+                            <div class='grid_2'>Ciudad</div>
+                            <div class='grid_2'>Teléfono</div>
+                        </div>
+                    </li>
+            </div> 
+
+                 <div data-role="footer" data-theme="c" data-position="fixed">
+                     <div align="center" style = "background-color: #243758; font-size:12px;"><img src="images/logo.png" alt="Ferrer"/> </div>
+
+                </div>
+
+        </div>
+
+ 
+</body>
+</html>

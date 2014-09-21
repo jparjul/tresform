@@ -1,0 +1,478 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" >
+    
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery-mobile-960.min.css" />
+    <link rel="stylesheet" href="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.css" />
+
+    <script src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+    <script src="jquery.mobile-1.1.0/jquery.mobile-1.1.0.min.js"></script>
+
+        <link rel="stylesheet" href="BlackBerry-JQM-1.0.0/BlackBerry-JQM-all.min.css" />
+    <script src="BlackBerry-JQM-1.0.0/BlackBerry-JQM-all.min.js"></script>
+    
+    <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+
+
+
+
+</head>
+ <script language="javascript" type="text/javascript">
+
+     var myDB;
+     var Cliente;
+     var SlpCode;
+     var xmlhttp = null;
+     var xmlDoc;
+     var xmlloaded = false;
+
+     $("#ventas1").live("pageinit", function (event) {
+
+
+         myDB = OpenDatabase(successfunction, errorfunction);
+         DeleteTempTable(successfunction, errorfunction);
+
+         InitializeMotivos();
+
+         Cliente = GetStorageValue("Cliente"); //queryString("Cliente");
+
+         if (Cliente != null) {
+
+             myDB.transaction(function (tx) {
+
+                 tx.executeSql("SELECT * FROM AX_OCRD WHERE CardCode = ?", [Cliente], function (tx, result) {
+                     dataset = result.rows;
+
+                     var sInitText = "<li><div class='container_12'><div class='grid_4'>";
+                     var sMidText = "</div><div class='grid_8'>";
+                     var sEndText = "</div></div></li>";
+
+                     var sText = "";
+                     sText = sInitText + "Cliente:" + sMidText + result.rows.item(0)['CardCode'] + sEndText;
+                     $("#liCliente").empty();
+                     $("#liCliente").append(sText);
+
+                     sText = sInitText + "Nombre Cliente:" + sMidText + result.rows.item(0)['CardName'] + sEndText;
+                     $("#liNombreCliente").empty();
+                     $("#liNombreCliente").append(sText);
+
+                     sText = sInitText + "Clasificación:" + sMidText + result.rows.item(0)['Clase'] + sEndText;
+                     $("#liClasificacion").empty();
+                     $("#liClasificacion").append(sText);
+
+                     sText = sInitText + "Canal:" + sMidText + result.rows.item(0)['Tipo'] + sEndText;
+                     $("#liCanal").empty();
+                     $("#liCanal").append(sText);
+
+
+                     if (window.navigator.onLine) {
+                         LoadLastOrder();
+                     }
+
+                     LoadComercial();
+
+                     $("#lvDatosCliente").listview("refresh");
+
+                 });
+             });
+
+         }
+
+     });
+
+     function LoadComercial() {
+
+         try {
+
+                 myDB = OpenDatabase(successfunction, errorfunction);
+
+                 myDB.transaction(function (tx) {
+
+                     tx.executeSql("SELECT SlpCode FROM AX_CONFIG", [], function (tx, result) {
+                         dataset = result.rows;
+
+                         if (dataset.length == 1) {
+                             SlpCode = result.rows.item(0)['SlpCode'];
+                             $('#toptitle').text("Ventas / Visitas  " + SlpCode.toString());  
+                         }
+                         else {
+                             alert("Debe introducir el código de Comercial en Herramientas/Configuración para realizar Visitas.");
+                         }
+                     });
+
+                 });
+         } catch (e) {
+             errorfunction(e);
+         }
+
+     }
+
+     function InitializeMotivos()
+     {
+        myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT * FROM AX_MOTIVOS ORDER BY Orden", [], function (tx, result) {
+                 dataset = result.rows;
+
+                 var sText = "";
+
+                sText = "<option value='0' data-placeholder='true'>Seleccione el motivo de no Pedido...</option>"
+
+                 for (var i = 0; i < dataset.length; i++) {
+                     var sId = result.rows.item(i)['Code'];
+                     var sName = result.rows.item(i)['Descripcion'];
+
+                     sText +="<option value='" + sId + "'>" + sName + "</option>" ;
+                 }
+                 $("#selectmotivos").html(sText).selectmenu('refresh', true);
+             });
+         });
+     }
+
+
+
+     $(document).delegate('#buttonsave', 'click', function () {
+
+         if (Cliente == null) {
+             alert("Debe seleccionar un Cliente.");
+             return;
+         }
+
+
+
+         var realizaPedido = $("#selectPedido").val();
+         if (realizaPedido == "on") realizaPedido = 1;
+         else realizaPedido = 0;
+
+         if (realizaPedido == 0) {
+
+             var sComments = document.getElementById("txtComments").value.toString();
+             sComments = sComments.replace(/^\s*|\s*$/g, "");
+             if (sComments == "") {
+                 alert("Debe introducir los comentarios de la visita.");
+                 return;
+             }
+
+             var sMotivos = $("#selectmotivos option:selected").val();
+             if (sMotivos == "0") {
+                 alert("Debe introducir el motivo de no realizar Pedido.");
+                 return;
+             }
+
+             if (confirm("Desea guardar los datos de la Visita ?", "Ferrer"))
+                 SaveVisit();
+         }
+         else {
+
+             var sModo = $("#selectModo option:selected").val();
+             if (sModo == "0") {
+                 alert("Debe introducir el Modo de Pedido.");
+                 return;
+             }
+             SaveVisit();
+
+         }
+
+     })
+
+     function SaveVisit() {
+
+         try {
+             myDB.transaction(
+                    function (transaction) {
+                        var iLastVisit = 0;
+                        var realizaPedido = $("#selectPedido").val();
+                        if (realizaPedido == "on") realizaPedido = 1;
+                        else realizaPedido = 0;
+
+                        var sModo = $("#selectModo option:selected").val();
+                        if (sModo == "0") sModo = "";
+
+                        transaction.executeSql('INSERT INTO AX_VISITAS (SlpCode,CardCode,Comments,Pedido,Motivo,Modo) VALUES  (?, ?, ?,?,?,?)', [SlpCode, Cliente, document.getElementById("txtComments").value, realizaPedido, $("#selectmotivos option:selected").val(), sModo],
+                             nullDataHandler, errorHandler);
+
+
+                        transaction.executeSql("SELECT MAX(Id) AS Ultima FROM AX_VISITAS", [], function (tx, result) {
+  
+                            localStorage['Cliente'] = Cliente;
+                            localStorage['Visita'] = result.rows.item(0)['Ultima'];
+
+                            if (realizaPedido ==1)
+                                window.location.assign("VentasPedido.html");
+                            else
+                                window.location.assign("index.html");
+
+                        }, errorHandler);
+                    }
+                );
+         }
+         catch (e) {
+             errorfunction(e);
+         }
+     }
+
+     function successfunction() { 
+         $.mobile.hidePageLoadingMsg();
+     }
+
+     function errorHandler(transaction, error) {
+         alert ( error.message + ' (Code ' + error.code + ')');
+         return true;
+     }
+
+     function nullDataHandler(transaction, results) {
+     }
+
+     function errorfunction(e) {
+         if (e == DOMException.INVALID_STATE_ERR) {
+
+             alert("Invalid database version.");
+         } else {
+             alert("Unknown error " + e + ".");
+         }
+         $.mobile.hidePageLoadingMsg();
+     }
+
+     function BlockMove(event) {
+         // Tell Safari not to move the window.
+         event.preventDefault();
+     }
+
+     function GetStorageValue(sKey) {
+         var value;
+         value = localStorage[sKey];
+         //localStorage[sKey] = null; 
+         localStorage.removeItem(sKey);
+
+         if (value== "null")  
+             value=null;
+         
+         return value;
+     }
+
+     function NavigateTo(sLink) {
+         if (confirm("Desea abandonar la edición de la Visita ?","Ferrer"))
+            window.location.assign(sLink);
+     }
+
+     function SelectCliente() {
+         localStorage['From'] = 'VentasInicio';
+         window.location.assign('ClientesSeleccion.html');
+     }
+
+
+     // ----------------------------------------------------------------------------------------
+     // Importa un fichero XML mediante XMLHttpRequest de forma asincrona
+     // ----------------------------------------------------------------------------------------
+     function LoadLastOrder() {
+         try {
+             xmlloaded = false;
+             xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = statuschange;
+             xmlhttp.open("GET", "LoadLastOrder.aspx?CardCode=" + Cliente.toString(), true);
+         }
+         catch (Exception) {
+
+         }
+
+         if (!xmlloaded) {
+             xmlhttp.setRequestHeader('Content-Type', 'text/xml')
+             xmlhttp.send("");
+//             xmlDoc = xmlhttp.responseXML;
+//             callbackfunction();
+             xmlloaded = true;
+         }
+     }
+
+     // ----------------------------------------------------------------------------------------
+     // statuschange
+     // callback del procés de importació xml
+     // ----------------------------------------------------------------------------------------
+     function statuschange() {
+     var sDate ="";
+     var sTotal = "";
+
+         if (xmlhttp.readyState == 4) {
+             if (xmlhttp.status == 200) {
+
+                 xmlDoc = xmlhttp.responseXML;
+                 try {
+                     sDate = xmlDoc.documentElement.getElementsByTagName("LastDate")[0].childNodes[0].nodeValue;
+                     sTotal = xmlDoc.documentElement.getElementsByTagName("LastTotal")[0].childNodes[0].nodeValue;
+                 }
+                 catch (e) {
+                 }
+
+                 $('#LastDate').text(sDate);
+                 $('#LastTotal').text(sTotal);
+
+             } else {
+                 alert("Error importación : " + xmlhttp.statusText + "\nHTTP status code: " + xmlhttp.status);
+             }
+         }
+     }
+
+     function GetElement(Node, sElement) {
+         var sValue = "";
+         try {
+             sValue = Node.getElementsByTagName(sElement)[0].childNodes[0].nodeValue;
+         }
+         catch (e) {
+
+         }
+         return sValue;
+     }
+
+     function GetNumericElement(Node, sElement) {
+         var sValue = "0";
+         try {
+             sValue = Node.getElementsByTagName(sElement)[0].childNodes[0].nodeValue;
+         }
+         catch (e) {
+
+         }
+         return sValue;
+     }
+
+
+     function OpenSelectMenu(event) {
+         event.preventDefault();
+         $('selectmotivos').selectmenu('open');	
+     }
+
+</script>
+ 
+
+<body ontouchmove="BlockMove(event);">
+
+         <div data-role="page" data-theme="c"  id="ventas1">
+
+	        <div data-role="header">
+                <a href="javascript:window.location.assign('index.html');" data-icon="home">Inicio</a>
+                 <h1 id="toptitle">Ventas/Visitas</h1>
+	            <a href="javascript:SelectCliente();" data-role="button" data-transition="pop"   data-icon="check" data-theme="b" data-ajax="false">Selección Cliente</a>
+            </div>
+
+ 
+
+	            <div data-role="content"  >	
+
+
+		            <ul data-role="listview" data-inset="true" id= "lvDatosCliente" data-mini="false">
+                       <li data-mini="false" data-role='list-divider'>Datos Cliente
+                       </li>
+
+                       <li data-mini="false" id ="liCliente"><div class='container_12'>
+                               <div class='grid_4'>Cliente:</div> 
+                               <div class='grid_8'></div> 
+                           </div> 
+                        </li> 
+                        <li data-mini="false" id ="liNombreCliente"><div class='container_12'>
+                               <div class='grid_4'>Nombre Cliente:</div> 
+                               <div class='grid_8'></div> 
+                           </div> 
+                        </li> 
+                        <li data-mini="false" id ="liClasificacion"><div class='container_12'>
+                               <div class='grid_4'>Clasificación:</div> 
+                               <div class='grid_8'></div> 
+                           </div> 
+                        </li> 
+                        <li data-mini="false" id ="liCanal"><div class='container_12'>
+                               <div class='grid_4'>Canal:</div> 
+                               <div class='grid_8'></div> 
+                           </div> 
+                        </li>
+                        <li data-mini="false" ><div class='container_12'>
+                               <div class='grid_4'>Ultimo Pedido:</div> 
+                               <div class='grid_2' id = "LastDate" style =" color: #0000FF;"></div> 
+                               <div class='grid_4'>Importe:</div> 
+                               <div class='grid_2' id ="LastTotal" style =" color: #0000FF;"></div>
+                           </div> 
+                        </li>  
+                        
+			     <li data-divider-theme="a" >
+                    <div class='container_12' data-theme="a">
+                         <ul data-role="listview" data-inset="true" id= "Ul1" data-divider-theme ="c" >
+                             <li data-role='list-divider' >Anotaciones recientes</li>
+                             <li data-role='list-divider' >
+                                 <div class='container_12'>
+                                   <div class='grid_2'>Actividad</div> 
+                                   <div class='grid_2'>Fecha</div> 
+                                   <div class='grid_2'>Usuario</div>
+                                   <div class='grid_6'>Comentarios</div>
+                               </div>
+                            </li>
+                        </ul> 
+                    </div>
+			    </li>
+                 <li data-role='list-divider'>Visita</li>
+			
+            <li data-role="fieldcontain">
+	        	<label for="selectPedido">Realiza Pedido:</label>
+				<select name="selectPedido" id="selectPedido" data-role="slider">
+					<option value="off">No</option>
+					<option value="on">Si</option>
+				</select>
+			</li>
+
+               <li data-role="fieldcontain" id="motivos" >
+                <label for="selectmotivos" class= "select" >Motivo no Pedido: </label>
+                <select name="selectmotivos" id="selectmotivos" data-native-menu="false" onmousedown ="javascript:OpenSelectMenu(event);">
+
+                </select>
+            </li>
+
+            <li data-role="fieldcontain" id="Li1" >
+                <label for="selectModo" class="select">Modo de Pedido:</label>
+		        <select name="selectModo" id="selectModo" data-native-menu="false">
+			        <option value="0" data-placeholder='true'>Seleccione el modo de Pedido...</option>";
+				    <option value="Teléfono" >Teléfono</option>
+				    <option value="Visita">Visita</option>
+				    <option value="E-Mail">E-Mail</option>
+				    <option value="Correo">Correo</option>
+                    <option value="E-Commerce">E-Commerce</option>
+			    </select>
+            </li>
+            
+                    
+                     <li data-role="fieldcontain">
+				         <fieldset data-role="controlgroup">
+			    	        <legend>Comentarios:</legend>
+                            <textarea  data-theme="e" style="width:100%;" name="txtComments" id="txtComments" value=""  rows= "20"/></textarea>
+			            </fieldset>
+			        </li>
+			 
+                    <li class="ui-body ui-body-b">
+				        <fieldset class="ui-grid-a">
+						        <div data-theme="b" class="ui-block-a"><button   data-theme="d">Cancelar</button></div>
+						        <div data-theme="b" class="ui-block-b"><button id="buttonsave" data-theme="a">Guardar</button></div>
+			            </fieldset>
+			        </li>
+
+			    </ul>
+
+             </div> 
+        
+
+                <div data-role="footer"  data-position="fixed" >
+                     <div data-role="navbar" data-iconpos="top">
+                          <ul>
+                             <li><a href="javascript:NavigateTo('RuteroMenu.html');"  data-icon="plus" data-prefetch="true"  >Rutero</a></li>
+                             <li><a href="javascript:NavigateTo('ClientesGeneral.html');"  data-icon="back" >Interlocutores</a></li>
+                             <li><a href="javascript:NavigateTo('Articulos.html');"  data-icon="back" >Articulos</a></li>
+                             <li><a href="javascript:NavigateTo('HerramientasMenu.html');"  data-icon="back" >Herramientas</a></li>
+                            </ul>                
+                    </div>
+                </div>
+
+         </div>
+
+    
+</body>
+</html>

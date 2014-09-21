@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<NewDataSet>
+  <VENTAS>
+    <CardCode>C00327</CardCode>
+    <CardName>CLIENTE 000001</CardName>
+    <ItemCode>500002</ItemCode>
+    <ItemName>TUECA CONEXIÓN 1</ItemName>
+    <Quantity>4.000000</Quantity>
+    <StockSum>0</StockSum>
+  </VENTAS>
+  <VENTAS>
+    <CardCode>C00327</CardCode>
+    <CardName>CLIENTE 000001</CardName>
+    <ItemCode>117224</ItemCode>
+    <ItemName>COLECTOR HEMBRA 215g.</ItemName>
+    <Quantity>6.000000</Quantity>
+    <StockSum>0</StockSum>
+  </VENTAS>
+ 
+</NewDataSet>

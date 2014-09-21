@@ -1,0 +1,206 @@
+﻿
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" >
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+    <link rel="stylesheet" href="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css" />
+
+    <script src="jquery.mobile-1.1.0/jquery-1.7.1.min.js"></script>
+    <script src="jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+    <script language="javascript" type="text/javascript" src="SBODatabase.js"></script>
+
+</head>
+ <script language="javascript" type="text/javascript">
+
+     var myDB;
+
+     if (window.navigator.standalone) {
+
+         $(function () {
+             $('a').each(function () {
+                 if (!$(this).hasClass('external')) {
+                     var href = $(this).attr('href');
+                     $(this).click(function () { window.location = href; return false; });
+
+                 }
+             });
+         });
+     }
+
+     $("#Config1").live("pageinit", function (event) {
+
+         myDB = OpenDatabase(successfunction, errorfunction);
+
+         myDB.transaction(function (tx) {
+
+             tx.executeSql("SELECT * FROM AX_CONFIG", [], function (tx, result) {
+                 dataset = result.rows;
+
+                 if (dataset.length > 0) {
+
+                     document.getElementById("txtCodigo").value = result.rows.item(0)['SlpCode'];
+                     document.getElementById("txtIPLocal").value = result.rows.item(0)['IPLocal'];
+                     document.getElementById("txtIPRemota").value = result.rows.item(0)['IPRemota'];
+                 }
+             });
+         });
+     });
+
+
+     $(document).delegate('#buttonsave', 'click', function () {
+
+         if (document.getElementById("txtCodigo").value == "") {
+             alert("Debe introducir el Código de Vendedor.");
+             return;
+         }
+         if (document.getElementById("txtIPLocal").value == "") {
+             alert("Debe introducir la IP Local.");
+             return;
+         }
+         if (document.getElementById("txtIPRemota").value == "") {
+             alert("Debe introducir la IP externa.");
+             return;
+         }
+
+         if (confirm("Desea guardar los datos de Configuración ?", "Ferrer"))
+             SaveConfig();
+        
+     })
+
+
+     $(document).delegate('#buttoncancel', 'click', function () {
+
+         window.location.assign('index.html');
+     })
+
+
+     function SaveConfig() {
+
+         $.mobile.loadingMessageTextVisible = true;
+         $.mobile.showPageLoadingMsg("a", "Guardando Configuración...", false);
+
+         try {
+
+             myDB.transaction(
+                    function (transaction) {
+                        transaction.executeSql('DELETE  FROM AX_CONFIG', [],
+                         InsertNewConfig, errorfunction);
+//                        transaction.executeSql('INSERT INTO AX_CONFIG VALUES  (?, ?, ?)', [document.getElementById("txtCodigo").value, document.getElementById("txtIPLocal").value, document.getElementById("txtIPRemota").value],
+//                             successfunction, errorfunction);
+
+//                        window.location.assign('index.html');
+                    }
+                );
+         }
+         catch (e) {
+             errorfunction(e);
+         }
+
+     }
+
+     function InsertNewConfig() {
+         myDB.transaction(
+            function (transaction) {
+
+                transaction.executeSql('INSERT INTO AX_CONFIG VALUES  (?, ?, ?)', [document.getElementById("txtCodigo").value, document.getElementById("txtIPLocal").value, document.getElementById("txtIPRemota").value],
+                        GotoIndex, errorfunction);
+
+               // window.location.assign('index.html');
+            }
+        );
+        }
+
+        function GotoIndex() {
+            $.mobile.hidePageLoadingMsg();
+            window.location.assign('index.html');
+        }
+            
+    
+
+     function successfunction() {
+         $.mobile.hidePageLoadingMsg();
+     }
+
+     function errorfunction(e) {
+         if (e == DOMException.INVALID_STATE_ERR) {
+
+             alert("Invalid database version.");
+         } else {
+             alert("Unknown error " + e + ".");
+         }
+         $.mobile.hidePageLoadingMsg();
+     }
+</script>
+
+<body>
+
+         <div data-role="page" data-theme="c"  id="Config1">
+
+	        <div data-role="header">
+	            <a data-rel="back" data-icon ="back">Anterior</a>
+	            <h1>Configuración</h1>
+                <a href="index.html" data-icon="home">Inicio</a>
+            </div>
+
+
+
+	            <div data-role="content"  >	
+
+
+		            <ul data-role="listview" data-inset="true" id= "lvDatosConfig">
+
+                           <li data-role='list-divider'>Datos Configuración
+                           </li>
+
+                            
+			             <li data-role="fieldcontain">
+                          
+                               <label for="txtIPLocal">Código Vendedor: </label>
+                               <input type="text" name="name" id="txtCodigo" value=""  />
+                           
+                        </li> 
+
+			             <li data-role="fieldcontain">
+                               <label for="txtIPLocal">IP Local: </label> 
+                               <input type="text" name="name" id="txtIPLocal" value=""  />
+ 
+                        </li> 
+
+                        <li data-role="fieldcontain">
+                               <label for="txtIPRemota">IP Externa: </label>
+                               <input type="text" name="name" id="txtIPRemota" value=""  /> 
+                        </li> 
+             
+			 
+                        <li class="ui-body ui-body-b">
+				            <fieldset class="ui-grid-a">
+						            <div class="ui-block-a"><button id="buttoncancel" data-theme="d">Cancelar</button></div>
+						            <div class="ui-block-b"><button id="buttonsave" data-theme="a">Guardar</button></div>
+			                </fieldset>
+			            </li>
+
+			        </ul>
+
+ 
+	                         
+ 
+                </div> 
+
+
+                <div data-role="footer"  data-position="fixed" >
+                    <div data-role="navbar" data-iconpos="top">
+                        <ul>
+                            <li><a href="javascript:window.location.assign('RuteroMenu.html');"  data-icon="back" >Rutero</a></li>
+                            <li><a href="javascript:window.location.assign('VentasInicio.html');"  data-icon="plus" data-prefetch="true"  >Ventas/Visitas</a></li>
+                            <li><a href="javascript:window.location.assign('ClientesGeneral.html');"  data-icon="back" >Interlocutores</a></li>
+                            <li><a href="javascript:window.location.assign('Articulos.html');"  data-icon="back" >Articulos</a></li>
+                        </ul>                
+                </div>
+
+         </div>
+</body>
+</html>
